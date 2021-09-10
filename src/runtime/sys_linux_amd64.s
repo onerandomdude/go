@@ -34,6 +34,7 @@
 #define SYS_exit		60
 #define SYS_kill		62
 #define SYS_fcntl		72
+#define SYS_gettimeofday    96
 #define SYS_sigaltstack 	131
 #define SYS_arch_prctl		158
 #define SYS_gettid		186
@@ -191,6 +192,13 @@ TEXT runtime·setitimer(SB),NOSPLIT,$0-24
 	MOVQ	new+8(FP), SI
 	MOVQ	old+16(FP), DX
 	MOVL	$SYS_setittimer, AX
+	SYSCALL
+	RET
+
+TEXT runtime·gettimeofday(SB),NOSPLIT,$-8
+	MOVQ	tv+0(FP), DI
+	MOVQ	tz+8(FP), SI
+	MOVQ	$SYS_gettimeofday, AX
 	SYSCALL
 	RET
 
