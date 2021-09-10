@@ -1331,6 +1331,8 @@ HaveSpan:
 func (h *mheap) grow(npage uintptr) bool {
 	assertLockHeld(&h.lock)
 
+	println("[DEBUG] mheap grow")
+
 	// We must grow the heap in whole palloc chunks.
 	ask := alignUp(npage, pallocChunkPages) * pageSize
 
