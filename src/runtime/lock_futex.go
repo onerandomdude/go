@@ -44,7 +44,15 @@ func key32(p *uintptr) *uint32 {
 }
 
 func lock(l *mutex) {
+	var st timeval
+	gettimeofday(&st, nil)
 	lockWithRank(l, getLockRank(l))
+	if l == &mheap_.lock {
+		var et timeval
+		gettimeofday(&et, nil)
+		var t = (et.tv_sec - st.tv_sec) * 1000000 + (et.tv_usec - st.tv_usec)
+		print("[DEBUG] spent on locking mheap ", t, " us\n")
+	}
 }
 
 func lock2(l *mutex) {
