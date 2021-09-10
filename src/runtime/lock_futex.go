@@ -51,7 +51,9 @@ func lock(l *mutex) {
 		var et timeval
 		gettimeofday(&et, nil)
 		var t = (et.tv_sec - st.tv_sec) * 1000000 + (et.tv_usec - st.tv_usec)
-		print("[DEBUG] spent on locking mheap ", t, " us\n")
+		if t >= 1000 {
+			print("[DEBUG] spent on locking mheap ", t, " us\n")
+		}
 	}
 }
 
