@@ -8,6 +8,7 @@ package runtime
 
 import (
 	"runtime/internal/atomic"
+	"time"
 	"unsafe"
 )
 
@@ -44,7 +45,12 @@ func key32(p *uintptr) *uint32 {
 }
 
 func lock(l *mutex) {
+	st := time.Now()
 	lockWithRank(l, getLockRank(l))
+	if l == &mheap_.lock {
+		t := time.Since(st)
+		print("[DEBUG] time spent on locking mheap.lock: ", t.Microseconds(), "us\n")
+	}
 }
 
 func lock2(l *mutex) {
